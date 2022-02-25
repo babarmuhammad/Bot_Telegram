@@ -1,0 +1,13 @@
+https://api.telegram.org/bot5272361811:AAFD7HVqmrvFgthEKaQ_PBehrPnS1F7E0LE
+Api token: 5272361811:AAFD7HVqmrvFgthEKaQ_PBehrPnS1F7E0LE
+
+/getMe
+/getUpdates
+/sendMessage?chat_id=idChat&text=ciao%20anche%20a%20te
+
+text= ciao anche a te
+
+
+https://stackoverflow.com/questions/2591098/how-to-parse-json-in-java
+
+download library: https://github.com/stleary/JSON-java
