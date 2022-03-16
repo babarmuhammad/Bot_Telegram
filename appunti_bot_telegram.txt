@@ -11,3 +11,7 @@ text= ciao anche a te
 https://stackoverflow.com/questions/2591098/how-to-parse-json-in-java
 
 download library: https://github.com/stleary/JSON-java
+
+//csv
+
+https://www.delftstack.com/howto/java/java-write-to-csv/

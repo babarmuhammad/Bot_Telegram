@@ -4,13 +4,19 @@
  * and open the template in the editor.
  */
 package telegram_bot;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Scanner;
 import java.util.Vector;
+import javax.xml.parsers.ParserConfigurationException;
 import org.json.*;
+import org.xml.sax.SAXException;
+import telegram_api.Csv;
 import telegram_api.Functions;
 import telegram_api.Message;
 import telegram_api.Update;
 import telegram_api.User;
+import telegram_api.parseXml;
 import telegram_api.test;
 
 /**
@@ -22,14 +28,15 @@ public class Telegram_bot {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws MalformedURLException, IOException, ParserConfigurationException, SAXException {
         // TODO code application logic here
         Functions f = new Functions();
+        Csv newCsv = new Csv();
         String scelta = "0";
         do
         {
             System.out.println("\nScelta:");
-            System.out.println("[1]GetMe\n[2]GetUpdates\n[3]SendMessage");
+            System.out.println("[1]GetMe\n[2]GetUpdates\n[3]SendMessage\n[4]GetCoordinate");
 
             Scanner myObj = new Scanner(System.in);  // Create a Scanner object
             scelta = myObj.nextLine();
@@ -48,12 +55,37 @@ public class Telegram_bot {
                     }
                     break;
                 case "3":
+                    System.out.println("\nChat id:");
+                    String idChat = myObj.nextLine();
+                    System.out.println("");
+                    
                     System.out.println("\ntesto:");
                     String text = myObj.nextLine();
                     System.out.println("");
                     
-                    Message mess = f.sendMessage(text);
+                    Message mess = f.sendMessage(idChat,text);
                     System.out.println(mess.ToString()); 
+                    break;
+                case "4":
+                    Vector<Update> ArrayMsg = f.getUpdates();
+                    for(Update msgs:ArrayMsg)
+                    {
+                        //System.out.println(msgs.ToString());
+                        String testo = msgs.getMessage().getText();
+                        Integer idChat2 = msgs.getMessage().getChat().getId();
+                        String nome = msgs.getMessage().getChat().getFirst_name();
+                        String coord = "";
+                        if(testo.contains("/citta") && testo.length() > 6){
+                            String citta = testo.substring(testo.indexOf(" "));
+                            System.out.println(citta);
+                            coord = f.getCoordinate(citta);
+                            
+                             
+                        }
+                        
+                        newCsv.toCsv(idChat2,nome,coord);
+                        
+                    }
                     break;
             }
         }

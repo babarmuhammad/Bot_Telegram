@@ -6,14 +6,20 @@
 package telegram_api;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.parsers.ParserConfigurationException;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -149,11 +155,11 @@ public class Functions {
         return ArrayUpdates;
     }
     
-    public Message sendMessage(String testo)
+    public Message sendMessage(String chat_id,String testo)
     {
         Message mess = new Message();
         try {
-        URL url = new URL("https://api.telegram.org/bot5272361811:AAFD7HVqmrvFgthEKaQ_PBehrPnS1F7E0LE/sendMessage?chat_id=" + 2087113826 + "&text=" + testo);
+        URL url = new URL("https://api.telegram.org/bot5272361811:AAFD7HVqmrvFgthEKaQ_PBehrPnS1F7E0LE/sendMessage?chat_id=" + chat_id + "&text=" + testo);
         
         String inline = read(url);
         
@@ -231,5 +237,28 @@ public class Functions {
         //Close the scanner
         scanner.close();
         return inline;
+    }
+    
+    public String getCoordinate(String citta) throws MalformedURLException, IOException, ParserConfigurationException, SAXException{
+         String encodedCitta = URLEncoder.encode(citta, StandardCharsets.UTF_8.toString());; // Encoding a query string
+        URL url = new URL("https://nominatim.openstreetmap.org/search?q="+encodedCitta+"&format=xml&addressdetails=1");
+        parseXml xml = new parseXml();
+        Scanner inRemote = new Scanner(url.openStream());
+        inRemote.useDelimiter("\u001a");
+        
+        String content = inRemote.next();
+        PrintWriter wr = new PrintWriter("out.xml");
+        wr.write(content);
+        wr.close();
+        inRemote.close();
+        
+        
+        parseXml operation = new parseXml();
+        
+        
+        operation.parseDocument("out.xml");
+        String s = operation.getLatitude()+","+operation.getLongitude();
+        
+        return s;
     }
 }
