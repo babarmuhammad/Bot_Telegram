@@ -67,7 +67,9 @@ public class Telegram_bot {
                     System.out.println(mess.ToString()); 
                     break;
                 case "4":
+                    
                     Vector<Update> ArrayMsg = f.getUpdates();
+                   
                     for(Update msgs:ArrayMsg)
                     {
                         //System.out.println(msgs.ToString());
@@ -75,6 +77,7 @@ public class Telegram_bot {
                         Integer idChat2 = msgs.getMessage().getChat().getId();
                         String nome = msgs.getMessage().getChat().getFirst_name();
                         String coord = "";
+                        
                         if(testo.contains("/citta") && testo.length() > 6){
                             String citta = testo.substring(testo.indexOf(" "));
                             System.out.println(citta);
@@ -82,10 +85,16 @@ public class Telegram_bot {
                             
                              
                         }
-                        
-                        newCsv.toCsv(idChat2,nome,coord);
+                        if(newCsv.checkUtente(nome) == true){
+                             newCsv.toCsv(idChat2,nome,coord,true);
+                        }
+                        else if(newCsv.checkUtente(nome) == false )
+                            newCsv.toCsv(idChat2,nome,coord,false);
                         
                     }
+                    break;
+                case "5":
+                    newCsv.readCsv();
                     break;
             }
         }

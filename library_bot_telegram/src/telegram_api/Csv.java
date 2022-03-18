@@ -8,9 +8,12 @@ package telegram_api;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Vector;
 
 /**
  *
@@ -69,16 +72,17 @@ public class Csv {
         this.id_chat = id_chat;
     }
     
-    public void toCsv(int id_chat, String nome, String coordinate) throws FileNotFoundException{
+    public void toCsv(int id_chat, String nome, String coordinate, boolean method) throws FileNotFoundException{
         //String s = "";
-        PrintWriter pw = null;
         
-        pw = new PrintWriter(new File("Coordinate.csv"));
+        
+        
+        PrintWriter pw = new PrintWriter(new FileOutputStream(  new File("Coordinate.csv"), method /* append = true */)); 
         
         StringBuilder builder = new StringBuilder();
-        String columnNamesList = "id_chat,nome,lat,lon";
+       // String columnNamesList = "id_chat,nome,lat,lon";
         // No need give the headers Like: id, Name on builder.append
-        builder.append(columnNamesList +"\n");
+        //builder.append(columnNamesList +"\n");
         builder.append(String.valueOf(id_chat) + ",");
         builder.append(nome + ",");
         builder.append(coordinate);
@@ -93,16 +97,34 @@ public class Csv {
     }
     public boolean checkUtente(String nome) throws FileNotFoundException, IOException{
         boolean ok = false;
-         BufferedReader read;
-         read = new BufferedReader(new FileReader ("Coordinate.csv"));
-         String line;
-         while( read.readLine() != null){
-             
+        Vector<Csv> ArrCsv= readCsv(); 
+         for(Csv msg: ArrCsv){
+         if(msg.nome == nome){
+             ok = true;
+             return ok;
+         }   
+         else
+             ok = false;
          }
-         
          
         return ok;
     }
-    
+    public Vector<Csv> readCsv() throws FileNotFoundException, IOException{
+      String delimitatore = ",";
+      File file = new File("Coordinate.csv");
+      FileReader fr = new FileReader(file);
+      BufferedReader br = new BufferedReader(fr);
+      String line = " ";
+      String[] tempArr;
+      Vector<Csv> ArrCsv = null ;
+      while ((line = br.readLine()) != null) {
+        tempArr = line.split(delimitatore);
+        ArrCsv.add( new Csv(Integer.parseInt(tempArr[0]), tempArr[1], tempArr[2], tempArr[3]));
+        
+        
+      }
+      br.close();
+      return ArrCsv;
+    }
     
 }
