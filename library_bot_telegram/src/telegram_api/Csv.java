@@ -21,7 +21,7 @@ import java.util.Vector;
  */
 public class Csv {
     
-    int id_chat;
+    Integer id_chat;
     String nome;
     String lat, lon;
     
@@ -29,7 +29,7 @@ public class Csv {
     public Csv() {
     }
 
-    public Csv(int id_chat, String nome, String lat, String lon) {
+    public Csv(Integer id_chat, String nome, String lat, String lon) {
         this.id_chat = id_chat;
         this.nome = nome;
         this.lat = lat;
@@ -64,30 +64,24 @@ public class Csv {
         this.nome = nome;
     }
 
-    public int getId_chat() {
+    public Integer getId_chat() {
         return id_chat;
     }
 
-    public void setId_chat(int id_chat) {
+    public void setId_chat(Integer id_chat) {
         this.id_chat = id_chat;
     }
     
-    public void toCsv(int id_chat, String nome, String coordinate, boolean method) throws FileNotFoundException{
+    public void toCsv(Integer id_chat, String nome, String coordinate) throws FileNotFoundException{
         //String s = "";
         
         
         
-        PrintWriter pw = new PrintWriter(new FileOutputStream(  new File("Coordinate.csv"), method /* append = true */)); 
+        PrintWriter pw = new PrintWriter(new FileOutputStream(  new File("Coordinate.csv"), true /* append = true */)); 
         
         StringBuilder builder = new StringBuilder();
-       // String columnNamesList = "id_chat,nome,lat,lon";
-        // No need give the headers Like: id, Name on builder.append
-        //builder.append(columnNamesList +"\n");
-        builder.append(String.valueOf(id_chat) + ",");
-        builder.append(nome + ",");
-        builder.append(coordinate);
-        builder.append('\n');
-        pw.append(builder.toString());
+        builder.append(String.valueOf(id_chat) + ","+nome + ","+ coordinate + "\n");
+        pw.write(builder.toString());
         pw.close();
         pw.flush();
         System.out.println("done!");
@@ -95,29 +89,30 @@ public class Csv {
         
         //return s;
     }
-    public boolean checkUtente(String nome) throws FileNotFoundException, IOException{
-        boolean ok = false;
-        Vector<Csv> ArrCsv= readCsv(); 
+    public void checkUtente(Integer id_chat) throws FileNotFoundException, IOException{
+        
+         
+        Vector<Csv> ArrCsv =readCsv(); 
+        File f= new File("Coordinate.csv"); 
+        f.delete();
          for(Csv msg: ArrCsv){
-         if(msg.nome == nome){
-             ok = true;
-             return ok;
-         }   
-         else
-             ok = false;
+             
+         if(! msg.id_chat.equals(id_chat)){
+            updateCsv(msg.id_chat,msg.nome,msg.lat,msg.lon);
          }
          
-        return ok;
+         }
+         
     }
     public Vector<Csv> readCsv() throws FileNotFoundException, IOException{
       String delimitatore = ",";
       File file = new File("Coordinate.csv");
       FileReader fr = new FileReader(file);
       BufferedReader br = new BufferedReader(fr);
-      String line = " ";
+      String line = "";
       String[] tempArr;
-      Vector<Csv> ArrCsv = null ;
-      while ((line = br.readLine()) != null) {
+      Vector<Csv> ArrCsv = new Vector<Csv>() ;
+      while ((line = br.readLine()) != null && line!="") {
         tempArr = line.split(delimitatore);
         ArrCsv.add( new Csv(Integer.parseInt(tempArr[0]), tempArr[1], tempArr[2], tempArr[3]));
         
@@ -125,6 +120,18 @@ public class Csv {
       }
       br.close();
       return ArrCsv;
+    }
+    
+    public void updateCsv(Integer id_chat, String nome, String lat, String lon) throws FileNotFoundException{
+        
+        PrintWriter pw = new PrintWriter(new FileOutputStream(  new File("Coordinate.csv"), true /* append = true */)); 
+        
+        StringBuilder builder = new StringBuilder();
+        builder.append(String.valueOf(id_chat) + ","+nome + ","+lat + ","+lon + "\n");
+  
+        pw.write(builder.toString());
+        pw.close();
+        pw.flush();
     }
     
 }

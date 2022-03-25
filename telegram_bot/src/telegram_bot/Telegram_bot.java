@@ -82,16 +82,14 @@ public class Telegram_bot {
                             String citta = testo.substring(testo.indexOf(" "));
                             System.out.println(citta);
                             coord = f.getCoordinate(citta);
-                            
+                            newCsv.checkUtente(idChat2);
+                            newCsv.toCsv(idChat2,nome,coord);
                              
                         }
-                        if(newCsv.checkUtente(nome) == true){
-                             newCsv.toCsv(idChat2,nome,coord,true);
-                        }
-                        else if(newCsv.checkUtente(nome) == false )
-                            newCsv.toCsv(idChat2,nome,coord,false);
+                            
                         
-                    }
+                        
+                   }
                     break;
                 case "5":
                     newCsv.readCsv();
