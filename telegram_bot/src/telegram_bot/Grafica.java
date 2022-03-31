@@ -185,6 +185,8 @@ public class Grafica extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Grafica().setVisible(true);
+                threadCoord thread = new threadCoord();
+                thread.start();
             }
         });
     }
