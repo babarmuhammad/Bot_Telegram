@@ -131,7 +131,7 @@ public class Grafica extends javax.swing.JFrame {
             String raggio = txtRaggio.getText();
             String testo = txtTesto.getText();
             
-            File fileCsv = new File("Coordinate.csv");
+            //File fileCsv = new File("Coordinate.csv");
             
             Csv newCsv = new Csv();
             Functions func = new Functions();
