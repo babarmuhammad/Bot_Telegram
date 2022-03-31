@@ -261,4 +261,8 @@ public class Functions {
         
         return s;
     }
+    /*public double Distanza(String coord1 , String Coord2)
+    {
+         return Math.acos(Math.cos(Math.toRadians(90-p1.lat))*Math.cos(Math.toRadians(90-p2.lat))+Math.sin(Math.toRadians(90-p1.lat))*Math.sin(Math.toRadians(90-p2.lat))*Math.cos(Math.toRadians(p1.lon-p2.lon)))*6371*1000;
+    }*/
 }

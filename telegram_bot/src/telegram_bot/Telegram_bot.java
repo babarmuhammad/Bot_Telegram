@@ -11,13 +11,7 @@ import java.util.Vector;
 import javax.xml.parsers.ParserConfigurationException;
 import org.json.*;
 import org.xml.sax.SAXException;
-import telegram_api.Csv;
-import telegram_api.Functions;
-import telegram_api.Message;
-import telegram_api.Update;
-import telegram_api.User;
-import telegram_api.parseXml;
-import telegram_api.test;
+import telegram_api.*;
 
 /**
  *
@@ -30,7 +24,9 @@ public class Telegram_bot {
      */
     public static void main(String[] args) throws MalformedURLException, IOException, ParserConfigurationException, SAXException {
         // TODO code application logic here
-        Functions f = new Functions();
+         threadCoord thread = new threadCoord();
+        thread.start();
+        /*Functions f = new Functions();
         Csv newCsv = new Csv();
         String scelta = "0";
         do
@@ -96,7 +92,7 @@ public class Telegram_bot {
                     break;
             }
         }
-        while(!scelta.equals("-1"));
+        while(!scelta.equals("-1"));*/
     }
     
     
