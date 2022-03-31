@@ -242,7 +242,7 @@ public class Functions {
     public String getCoordinate(String citta) throws MalformedURLException, IOException, ParserConfigurationException, SAXException{
          String encodedCitta = URLEncoder.encode(citta, StandardCharsets.UTF_8.toString());; // Encoding a query string
         URL url = new URL("https://nominatim.openstreetmap.org/search?q="+encodedCitta+"&format=xml&addressdetails=1");
-        parseXml xml = new parseXml();
+        /*parseXml xml = new parseXml();
         Scanner inRemote = new Scanner(url.openStream());
         inRemote.useDelimiter("\u001a");
         
@@ -250,19 +250,28 @@ public class Functions {
         PrintWriter wr = new PrintWriter("out.xml");
         wr.write(content);
         wr.close();
-        inRemote.close();
+        inRemote.close();*/
         
         
         parseXml operation = new parseXml();
         
         
-        operation.parseDocument("out.xml");
+        operation.parseDocument(url.toString());
         String s = operation.getLatitude()+","+operation.getLongitude();
         
         return s;
     }
-    /*public double Distanza(String coord1 , String Coord2)
+    public double Distanza(String coord1 , String coord2)
     {
-         return Math.acos(Math.cos(Math.toRadians(90-p1.lat))*Math.cos(Math.toRadians(90-p2.lat))+Math.sin(Math.toRadians(90-p1.lat))*Math.sin(Math.toRadians(90-p2.lat))*Math.cos(Math.toRadians(p1.lon-p2.lon)))*6371*1000;
-    }*/
+        String arrCoord1[] = splitCoordinate(coord1);
+        String arrCoord2[] = splitCoordinate(coord2);
+        
+         return Math.acos(Math.cos(Math.toRadians(90- Float.parseFloat(arrCoord1[0])))*Math.cos(Math.toRadians(90- Float.parseFloat(arrCoord2[0])))+Math.sin(Math.toRadians(90-Float.parseFloat(arrCoord1[0])))*Math.sin(Math.toRadians(90-Float.parseFloat(arrCoord2[0])))*Math.cos(Math.toRadians(Float.parseFloat(arrCoord1[1])-Float.parseFloat(arrCoord2[1]))))*6371*1000;
+    }
+    public String[] splitCoordinate(String Coord){
+        String tempArr[];
+        tempArr = Coord.split(",");
+        
+        return tempArr;
+    }
 }
